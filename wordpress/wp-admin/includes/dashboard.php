@@ -286,7 +286,15 @@ function wp_dashboard_right_now() {
 			if ( ! $num_comm->moderated ) {
 				
 			}
-		?>"><a href="users.php" aria-label="<?php esc_attr_e( $aria_label ); ?>"><?php echo(count_user()["total_users"]); ?></a></li>
+		?>"><a href="users.php" aria-label="<?php esc_attr_e( $aria_label ); ?>"><?php echo(count_users()["total_users"]); ?>
+			<?php
+				if (count_users()["total_users"] >= 2) {
+					echo "Users";
+				}else 
+					echo "User";
+			 ?>
+
+		</a></li>
 		<?php
 	}
 
