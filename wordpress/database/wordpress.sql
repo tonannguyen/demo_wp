@@ -3,14 +3,11 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2017 at 07:56 AM
+-- Generation Time: Nov 20, 2017 at 07:59 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
-SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -22,7 +19,104 @@ SET time_zone = "+00:00";
 --
 -- Database: `wordpress`
 --
+CREATE DATABASE IF NOT EXISTS `wordpress` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+USE `wordpress`;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wp_commentmeta`
+--
+
+DROP TABLE IF EXISTS `wp_commentmeta`;
+CREATE TABLE IF NOT EXISTS `wp_commentmeta` (
+  `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `comment_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `meta_key` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `meta_value` longtext COLLATE utf8mb4_unicode_520_ci,
+  PRIMARY KEY (`meta_id`),
+  KEY `comment_id` (`comment_id`),
+  KEY `meta_key` (`meta_key`(191))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci AUTO_INCREMENT=1 ;
+
+--
+-- Truncate table before insert `wp_commentmeta`
+--
+
+TRUNCATE TABLE `wp_commentmeta`;
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wp_comments`
+--
+
+DROP TABLE IF EXISTS `wp_comments`;
+CREATE TABLE IF NOT EXISTS `wp_comments` (
+  `comment_ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `comment_post_ID` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `comment_author` tinytext COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `comment_author_email` varchar(100) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `comment_author_url` varchar(200) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `comment_author_IP` varchar(100) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `comment_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `comment_date_gmt` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `comment_content` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `comment_karma` int(11) NOT NULL DEFAULT '0',
+  `comment_approved` varchar(20) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '1',
+  `comment_agent` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `comment_type` varchar(20) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `comment_parent` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `user_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`comment_ID`),
+  KEY `comment_post_ID` (`comment_post_ID`),
+  KEY `comment_approved_date_gmt` (`comment_approved`,`comment_date_gmt`),
+  KEY `comment_date_gmt` (`comment_date_gmt`),
+  KEY `comment_parent` (`comment_parent`),
+  KEY `comment_author_email` (`comment_author_email`(10))
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci AUTO_INCREMENT=2 ;
+
+--
+-- Truncate table before insert `wp_comments`
+--
+
+TRUNCATE TABLE `wp_comments`;
+--
+-- Dumping data for table `wp_comments`
+--
+
+INSERT INTO `wp_comments` (`comment_ID`, `comment_post_ID`, `comment_author`, `comment_author_email`, `comment_author_url`, `comment_author_IP`, `comment_date`, `comment_date_gmt`, `comment_content`, `comment_karma`, `comment_approved`, `comment_agent`, `comment_type`, `comment_parent`, `user_id`) VALUES
+(1, 1, 'A WordPress Commenter', 'wapuu@wordpress.example', 'https://wordpress.org/', '', '2017-11-20 06:02:36', '2017-11-20 06:02:36', 'Hi, this is a comment.\nTo get started with moderating, editing, and deleting comments, please visit the Comments screen in the dashboard.\nCommenter avatars come from <a href="https://gravatar.com">Gravatar</a>.', 0, '1', '', '', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wp_links`
+--
+
+DROP TABLE IF EXISTS `wp_links`;
+CREATE TABLE IF NOT EXISTS `wp_links` (
+  `link_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `link_url` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `link_name` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `link_image` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `link_target` varchar(25) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `link_description` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `link_visible` varchar(20) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT 'Y',
+  `link_owner` bigint(20) unsigned NOT NULL DEFAULT '1',
+  `link_rating` int(11) NOT NULL DEFAULT '0',
+  `link_updated` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `link_rel` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `link_notes` mediumtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `link_rss` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`link_id`),
+  KEY `link_visible` (`link_visible`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci AUTO_INCREMENT=1 ;
+
+--
+-- Truncate table before insert `wp_links`
+--
+
+TRUNCATE TABLE `wp_links`;
 -- --------------------------------------------------------
 
 --
@@ -197,8 +291,328 @@ INSERT INTO `wp_options` (`option_id`, `option_name`, `option_value`, `autoload`
 (158, 'useronline_most', 'a:2:{s:5:"count";i:1;s:4:"date";i:1511160932;}', 'yes'),
 (159, 'useronline', 'a:5:{s:7:"timeout";i:300;s:3:"url";s:45:"http://localhost/demo_wp/wordpress/useronline";s:5:"names";b:0;s:6:"naming";a:8:{s:4:"user";s:6:"1 User";s:5:"users";s:13:"%COUNT% Users";s:6:"member";s:8:"1 Member";s:7:"members";s:15:"%COUNT% Members";s:5:"guest";s:7:"1 Guest";s:6:"guests";s:14:"%COUNT% Guests";s:3:"bot";s:5:"1 Bot";s:4:"bots";s:12:"%COUNT% Bots";}s:9:"templates";a:3:{s:10:"useronline";s:56:"<a href="%PAGE_URL%"><strong>%USERS%</strong> Online</a>";s:12:"browsingsite";a:2:{s:10:"separators";a:3:{s:7:"members";s:2:", ";s:6:"guests";s:2:", ";s:4:"bots";s:2:", ";}s:4:"text";s:86:"Users: <strong>%MEMBER_NAMES%%GUESTS_SEPARATOR%%GUESTS%%BOTS_SEPARATOR%%BOTS%</strong>";}s:12:"browsingpage";a:2:{s:10:"separators";a:3:{s:7:"members";s:2:", ";s:6:"guests";s:2:", ";s:4:"bots";s:2:", ";}s:4:"text";s:136:"<strong>%USERS%</strong> Browsing This Page.<br />Users: <strong>%MEMBER_NAMES%%GUESTS_SEPARATOR%%GUESTS%%BOTS_SEPARATOR%%BOTS%</strong>";}}}', 'yes'),
 (160, 'widget_useronline', 'a:0:{}', 'yes');
-SET FOREIGN_KEY_CHECKS=1;
-COMMIT;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wp_postmeta`
+--
+
+DROP TABLE IF EXISTS `wp_postmeta`;
+CREATE TABLE IF NOT EXISTS `wp_postmeta` (
+  `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `post_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `meta_key` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `meta_value` longtext COLLATE utf8mb4_unicode_520_ci,
+  PRIMARY KEY (`meta_id`),
+  KEY `post_id` (`post_id`),
+  KEY `meta_key` (`meta_key`(191))
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci AUTO_INCREMENT=8 ;
+
+--
+-- Truncate table before insert `wp_postmeta`
+--
+
+TRUNCATE TABLE `wp_postmeta`;
+--
+-- Dumping data for table `wp_postmeta`
+--
+
+INSERT INTO `wp_postmeta` (`meta_id`, `post_id`, `meta_key`, `meta_value`) VALUES
+(1, 2, '_wp_page_template', 'default'),
+(6, 6, '_wp_trash_meta_status', 'publish'),
+(7, 6, '_wp_trash_meta_time', '1511160840');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wp_posts`
+--
+
+DROP TABLE IF EXISTS `wp_posts`;
+CREATE TABLE IF NOT EXISTS `wp_posts` (
+  `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `post_author` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `post_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `post_date_gmt` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `post_content` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `post_title` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `post_excerpt` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `post_status` varchar(20) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT 'publish',
+  `comment_status` varchar(20) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT 'open',
+  `ping_status` varchar(20) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT 'open',
+  `post_password` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `post_name` varchar(200) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `to_ping` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `pinged` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `post_modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `post_modified_gmt` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `post_content_filtered` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `post_parent` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `guid` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `menu_order` int(11) NOT NULL DEFAULT '0',
+  `post_type` varchar(20) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT 'post',
+  `post_mime_type` varchar(100) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `comment_count` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`),
+  KEY `post_name` (`post_name`(191)),
+  KEY `type_status_date` (`post_type`,`post_status`,`post_date`,`ID`),
+  KEY `post_parent` (`post_parent`),
+  KEY `post_author` (`post_author`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci AUTO_INCREMENT=7 ;
+
+--
+-- Truncate table before insert `wp_posts`
+--
+
+TRUNCATE TABLE `wp_posts`;
+--
+-- Dumping data for table `wp_posts`
+--
+
+INSERT INTO `wp_posts` (`ID`, `post_author`, `post_date`, `post_date_gmt`, `post_content`, `post_title`, `post_excerpt`, `post_status`, `comment_status`, `ping_status`, `post_password`, `post_name`, `to_ping`, `pinged`, `post_modified`, `post_modified_gmt`, `post_content_filtered`, `post_parent`, `guid`, `menu_order`, `post_type`, `post_mime_type`, `comment_count`) VALUES
+(1, 1, '2017-11-20 06:02:36', '2017-11-20 06:02:36', 'Welcome to WordPress. This is your first post. Edit or delete it, then start writing!', 'Hello world!', '', 'publish', 'open', 'open', '', 'hello-world', '', '', '2017-11-20 06:02:36', '2017-11-20 06:02:36', '', 0, 'http://localhost/wordpress/?p=1', 0, 'post', '', 1),
+(2, 1, '2017-11-20 06:02:36', '2017-11-20 06:02:36', 'This is an example page. It''s different from a blog post because it will stay in one place and will show up in your site navigation (in most themes). Most people start with an About page that introduces them to potential site visitors. It might say something like this:\n\n<blockquote>Hi there! I''m a bike messenger by day, aspiring actor by night, and this is my website. I live in Los Angeles, have a great dog named Jack, and I like pi&#241;a coladas. (And gettin'' caught in the rain.)</blockquote>\n\n...or something like this:\n\n<blockquote>The XYZ Doohickey Company was founded in 1971, and has been providing quality doohickeys to the public ever since. Located in Gotham City, XYZ employs over 2,000 people and does all kinds of awesome things for the Gotham community.</blockquote>\n\nAs a new WordPress user, you should go to <a href="http://localhost/wordpress/wp-admin/">your dashboard</a> to delete this page and create new pages for your content. Have fun!', 'Sample Page', '', 'publish', 'closed', 'open', '', 'sample-page', '', '', '2017-11-20 06:02:36', '2017-11-20 06:02:36', '', 0, 'http://localhost/wordpress/?page_id=2', 0, 'page', '', 0),
+(3, 1, '2017-11-20 06:02:56', '0000-00-00 00:00:00', '', 'Auto Draft', '', 'auto-draft', 'open', 'open', '', '', '', '', '2017-11-20 06:02:56', '0000-00-00 00:00:00', '', 0, 'http://localhost/wordpress/?p=3', 0, 'post', '', 0),
+(6, 1, '2017-11-20 06:54:00', '2017-11-20 06:54:00', '{\n    "old_sidebars_widgets_data": {\n        "value": {\n            "wp_inactive_widgets": [],\n            "sidebar-1": [\n                "search-2",\n                "recent-posts-2",\n                "recent-comments-2",\n                "archives-2",\n                "categories-2",\n                "meta-2"\n            ],\n            "sidebar-2": [],\n            "sidebar-3": []\n        },\n        "type": "global_variable",\n        "user_id": 1,\n        "date_modified_gmt": "2017-11-20 06:54:00"\n    }\n}', '', '', 'trash', 'closed', 'closed', '', '2d67c1c3-1ca8-4e73-89dc-60216b7f2182', '', '', '2017-11-20 06:54:00', '2017-11-20 06:54:00', '', 0, 'http://localhost/demo_wp/wordpress/index.php/2017/11/20/2d67c1c3-1ca8-4e73-89dc-60216b7f2182/', 0, 'customize_changeset', '', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wp_termmeta`
+--
+
+DROP TABLE IF EXISTS `wp_termmeta`;
+CREATE TABLE IF NOT EXISTS `wp_termmeta` (
+  `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `term_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `meta_key` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `meta_value` longtext COLLATE utf8mb4_unicode_520_ci,
+  PRIMARY KEY (`meta_id`),
+  KEY `term_id` (`term_id`),
+  KEY `meta_key` (`meta_key`(191))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci AUTO_INCREMENT=1 ;
+
+--
+-- Truncate table before insert `wp_termmeta`
+--
+
+TRUNCATE TABLE `wp_termmeta`;
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wp_terms`
+--
+
+DROP TABLE IF EXISTS `wp_terms`;
+CREATE TABLE IF NOT EXISTS `wp_terms` (
+  `term_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `slug` varchar(200) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `term_group` bigint(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`term_id`),
+  KEY `slug` (`slug`(191)),
+  KEY `name` (`name`(191))
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci AUTO_INCREMENT=2 ;
+
+--
+-- Truncate table before insert `wp_terms`
+--
+
+TRUNCATE TABLE `wp_terms`;
+--
+-- Dumping data for table `wp_terms`
+--
+
+INSERT INTO `wp_terms` (`term_id`, `name`, `slug`, `term_group`) VALUES
+(1, 'Uncategorized', 'uncategorized', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wp_term_relationships`
+--
+
+DROP TABLE IF EXISTS `wp_term_relationships`;
+CREATE TABLE IF NOT EXISTS `wp_term_relationships` (
+  `object_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `term_taxonomy_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `term_order` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`object_id`,`term_taxonomy_id`),
+  KEY `term_taxonomy_id` (`term_taxonomy_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+--
+-- Truncate table before insert `wp_term_relationships`
+--
+
+TRUNCATE TABLE `wp_term_relationships`;
+--
+-- Dumping data for table `wp_term_relationships`
+--
+
+INSERT INTO `wp_term_relationships` (`object_id`, `term_taxonomy_id`, `term_order`) VALUES
+(1, 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wp_term_taxonomy`
+--
+
+DROP TABLE IF EXISTS `wp_term_taxonomy`;
+CREATE TABLE IF NOT EXISTS `wp_term_taxonomy` (
+  `term_taxonomy_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `term_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `taxonomy` varchar(32) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `description` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `parent` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `count` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`term_taxonomy_id`),
+  UNIQUE KEY `term_id_taxonomy` (`term_id`,`taxonomy`),
+  KEY `taxonomy` (`taxonomy`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci AUTO_INCREMENT=2 ;
+
+--
+-- Truncate table before insert `wp_term_taxonomy`
+--
+
+TRUNCATE TABLE `wp_term_taxonomy`;
+--
+-- Dumping data for table `wp_term_taxonomy`
+--
+
+INSERT INTO `wp_term_taxonomy` (`term_taxonomy_id`, `term_id`, `taxonomy`, `description`, `parent`, `count`) VALUES
+(1, 1, 'category', '', 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wp_usermeta`
+--
+
+DROP TABLE IF EXISTS `wp_usermeta`;
+CREATE TABLE IF NOT EXISTS `wp_usermeta` (
+  `umeta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `meta_key` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `meta_value` longtext COLLATE utf8mb4_unicode_520_ci,
+  PRIMARY KEY (`umeta_id`),
+  KEY `user_id` (`user_id`),
+  KEY `meta_key` (`meta_key`(191))
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci AUTO_INCREMENT=33 ;
+
+--
+-- Truncate table before insert `wp_usermeta`
+--
+
+TRUNCATE TABLE `wp_usermeta`;
+--
+-- Dumping data for table `wp_usermeta`
+--
+
+INSERT INTO `wp_usermeta` (`umeta_id`, `user_id`, `meta_key`, `meta_value`) VALUES
+(1, 1, 'nickname', 'demo'),
+(2, 1, 'first_name', ''),
+(3, 1, 'last_name', ''),
+(4, 1, 'description', ''),
+(5, 1, 'rich_editing', 'true'),
+(6, 1, 'syntax_highlighting', 'true'),
+(7, 1, 'comment_shortcuts', 'false'),
+(8, 1, 'admin_color', 'fresh'),
+(9, 1, 'use_ssl', '0'),
+(10, 1, 'show_admin_bar_front', 'true'),
+(11, 1, 'locale', ''),
+(12, 1, 'wp_capabilities', 'a:1:{s:13:"administrator";b:1;}'),
+(13, 1, 'wp_user_level', '10'),
+(14, 1, 'dismissed_wp_pointers', ''),
+(15, 1, 'show_welcome_panel', '0'),
+(16, 1, 'session_tokens', 'a:2:{s:64:"54098d87bf20651ee8550fe31f1ab4dade55eef4cf57261ffa0b6048c1200de1";a:4:{s:10:"expiration";i:1511330574;s:2:"ip";s:3:"::1";s:2:"ua";s:102:"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36";s:5:"login";i:1511157774;}s:64:"d3f0ae80644ad3feea915d2021cf019da5431565560ea092d24b9d22e2c57780";a:4:{s:10:"expiration";i:1511330743;s:2:"ip";s:3:"::1";s:2:"ua";s:102:"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36";s:5:"login";i:1511157943;}}'),
+(17, 1, 'wp_dashboard_quick_press_last_post_id', '3'),
+(18, 1, 'community-events-location', 'a:1:{s:2:"ip";s:2:"::";}'),
+(19, 2, 'nickname', 'superAdmin'),
+(20, 2, 'first_name', 'Dao'),
+(21, 2, 'last_name', 'Phuong'),
+(22, 2, 'description', ''),
+(23, 2, 'rich_editing', 'true'),
+(24, 2, 'syntax_highlighting', 'true'),
+(25, 2, 'comment_shortcuts', 'false'),
+(26, 2, 'admin_color', 'fresh'),
+(27, 2, 'use_ssl', '0'),
+(28, 2, 'show_admin_bar_front', 'true'),
+(29, 2, 'locale', ''),
+(30, 2, 'wp_capabilities', 'a:1:{s:13:"administrator";b:1;}'),
+(31, 2, 'wp_user_level', '10'),
+(32, 2, 'dismissed_wp_pointers', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wp_useronline`
+--
+
+DROP TABLE IF EXISTS `wp_useronline`;
+CREATE TABLE IF NOT EXISTS `wp_useronline` (
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `user_type` varchar(20) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT 'guest',
+  `user_id` bigint(20) NOT NULL DEFAULT '0',
+  `user_name` varchar(250) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `user_ip` varchar(39) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `user_agent` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `page_title` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `page_url` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `referral` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  UNIQUE KEY `useronline_id` (`timestamp`,`user_type`,`user_ip`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+--
+-- Truncate table before insert `wp_useronline`
+--
+
+TRUNCATE TABLE `wp_useronline`;
+--
+-- Dumping data for table `wp_useronline`
+--
+
+INSERT INTO `wp_useronline` (`timestamp`, `user_type`, `user_id`, `user_name`, `user_ip`, `user_agent`, `page_title`, `page_url`, `referral`) VALUES
+('2017-11-19 23:55:46', 'member', 1, 'demo', '::1', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36', 'Demo WP &raquo; Admin &raquo; Add Plugins', '/demo_wp/wordpress/wp-admin/plugin-install.php', 'http://localhost/demo_wp/wordpress/wp-admin/plugins.php?plugin_status=all&paged=1&s');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wp_users`
+--
+
+DROP TABLE IF EXISTS `wp_users`;
+CREATE TABLE IF NOT EXISTS `wp_users` (
+  `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_login` varchar(60) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `user_pass` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `user_nicename` varchar(50) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `user_email` varchar(100) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `user_url` varchar(100) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `user_registered` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `user_activation_key` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `user_status` int(11) NOT NULL DEFAULT '0',
+  `display_name` varchar(250) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`ID`),
+  KEY `user_login_key` (`user_login`),
+  KEY `user_nicename` (`user_nicename`),
+  KEY `user_email` (`user_email`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci AUTO_INCREMENT=3 ;
+
+--
+-- Truncate table before insert `wp_users`
+--
+
+TRUNCATE TABLE `wp_users`;
+--
+-- Dumping data for table `wp_users`
+--
+
+INSERT INTO `wp_users` (`ID`, `user_login`, `user_pass`, `user_nicename`, `user_email`, `user_url`, `user_registered`, `user_activation_key`, `user_status`, `display_name`) VALUES
+(1, 'demo', '$P$Bj6l70XTShgR3KVqk.szZ/KdhXrrRm0', 'demo', 'admin@gmail.com', '', '2017-11-20 06:02:36', '', 0, 'demo'),
+(2, 'superAdmin', '$P$BpZdDOs2UddPkD2rNAeoabOfkErCYo0', 'superadmin', 'superadmin@gmail.com', '', '2017-11-20 06:17:11', '1511158633:$P$BOn4.FiWuYkH4B9f063UUCCuW3jG1P/', 0, 'Dao Phuong');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
